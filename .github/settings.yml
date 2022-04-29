@@ -1,0 +1,8 @@
+---
+#
+# Ansible managed
+#
+repository:
+  description: Install Drupal shell.
+  homepage: https://buluma.github.io/
+  topics: drush, ansible, molecule, tox, playbook, hacktoberfest

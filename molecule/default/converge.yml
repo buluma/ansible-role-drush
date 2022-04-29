@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include buluma.newrelic"
-      include_role:
-        name: "buluma.newrelic"
+    - name: "Include buluma.drush"
+      ansible.builtin.include_role:
+        name: "buluma.drush"
