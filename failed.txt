@@ -1,0 +1,3 @@
+ansible-role-drush [generator]: ERROR: Unhandled exception when retrieving 'DEFAULT_LOCAL_TMP': [Errno 1] Operation not permitted: '/Users/shadowwalker/.ansible/tmp/ansible-local-83639cev2g26e'
+ansible-role-drush [ansible-lint]:  Namespace: https://old-galaxy.ansible.com/docs/contributing/namespaces.html#galaxy-namespace-limitations Role: https://old-galaxy.ansible.com/docs/contributing/creating_role.html#role-names As an alternative, you can add 'role-name' to either skip_list or warn_list. 
+ansible-role-drush [yamllint]:  40:19 error forbidden implicit octal value "0755" (octal-values) 45:19 error forbidden implicit octal value "0755" (octal-values) ./molecule/default/verify.yml 8:3 error wrong indentation: expected at least 3 (indentation) 

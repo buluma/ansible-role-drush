@@ -1,14 +1,12 @@
 ---
 galaxy_info:
-  author: Michael Buluma
-  role_name: drush
+  author: 'Michael Buluma'
   namespace: buluma
-  description: Install Drupal shell.
-  company: ShadowNet
+  role_name: drush
+  description: "Install Drupal shell."
   license: Apache-2.0
-
+  company: ShadowNet
   min_ansible_version: "2.10"
-  #
   platforms:
     - name: Fedora
       versions:
@@ -16,8 +14,6 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - all
-
   galaxy_tags:
     - drush
-
 dependencies: []
