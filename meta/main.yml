@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: 'Michael Buluma'
+  author: "Michael Buluma"
   namespace: buluma
   role_name: drush
   description: "Install Drupal shell."

@@ -1,52 +1,59 @@
 ---
 # tasks file for drush
 
-- name: import assert.yml
+- name: Import assert.yml
   ansible.builtin.import_tasks: assert.yml
-  run_once: yes
+  run_once: true
   delegate_to: localhost
 
 # Pretasks
-- name: update apt cache.
-  ansible.builtin.apt: update_cache=true cache_valid_time=600
+- name: Update apt cache.
+  ansible.builtin.apt:
+    update_cache: "true"
+    cache_valid_time: "600"
   when: ansible_os_family == 'Debian'
 
-- name: ensure unzip is installed.
-  ansible.builtin.package: name=unzip state=present
+- name: Ensure unzip is installed.
+  ansible.builtin.package:
 
-- name: install drush launcher.
+    name: unzip
+    state: present
+- name: Install drush launcher.
+  when: drush_launcher_install
+
+  # Install Drush Composer
   block:
-    - name: check current state.
+    - name: Check current state.
       ansible.builtin.stat:
         path: "{{ drush_launcher_path }}"
       register: drush_path_state
 
-    - name: perform cleanup of old symlink.
+    - name: Perform cleanup of old symlink.
       ansible.builtin.file:
         path: "{{ drush_launcher_path }}"
         state: absent
       when: drush_path_state.stat.islnk is defined and drush_path_state.stat.islnk
 
-    - name: ensure Drush path directory exists.
+    - name: Ensure Drush path directory exists.
       ansible.builtin.file:
         path: "{{ drush_launcher_path | dirname }}"
         state: directory
-        mode: 0755
+        mode: "0755"
 
-    - name: install drush.
+    - name: Install drush.
       ansible.builtin.get_url:
         url: "{{ drush_launcher_phar_url }}"
         dest: "{{ drush_launcher_path }}"
-        mode: 0755
+        mode: "0755"
 
-    - name: ensure drush is executable.
+    - name: Ensure drush is executable.
       ansible.builtin.file:
         path: "{{ drush_launcher_path }}"
-        mode: 0755
-  when: drush_launcher_install
+        mode: "0755"
+- name: Install drush composer.
+  when: drush_composer_global_install
 
-# Install Drush Composer
-- name: install drush composer.
+  # Install Drush Source
   block:
     # Use manual composer tasks until Ansible 2.10.4 is released.
     # - name: Ensure Drush is installed globally via Composer.
@@ -64,8 +71,8 @@
     #   tags: ['skip_ansible_lint']
 
     # Switch back to these tasks after Ansible 2.10.4 is released.
-    - name: ensure Drush is installed globally via Composer.
-      composer:
+    - name: Ensure Drush is installed globally via Composer.
+      community.general.composer:
         command: require
         global_command: true
         arguments: "drush/drush:{{ drush_composer_version }}"
@@ -79,19 +86,17 @@
       when:
         - drush_composer_update
         - not drush_composer_require.changed
-      tags: ['skip_ansible_lint']
+      tags: ["skip_ansible_lint"]
 
-    - name: ensure globally-installed Drush is symlinked into bin dir.
-      ansible.builtin.file:  # noqa 208
+    - name: Ensure globally-installed Drush is symlinked into bin dir.
+      ansible.builtin.file: # noqa 208
         src: "{{ drush_composer_global_bin_path }}/drush"
         dest: "{{ drush_composer_path }}"
         state: link
-  when: drush_composer_global_install
-
-# Install Drush Source
-- name: install drush source.
+- name: Install drush source.
+  when: drush_install_from_source
   block:
-    - name: clone Drush from GitHub.
+    - name: Clone Drush from GitHub.
       ansible.builtin.git:
         repo: https://github.com/drush-ops/drush.git
         dest: "{{ drush_source_install_path }}"
@@ -101,8 +106,10 @@
         depth: "{{ drush_clone_depth }}"
       register: drush_clone
 
-    - name: check for composer.json
-      ansible.builtin.stat: path={{ drush_source_install_path }}/composer.json
+    - name: Check for composer.json
+      ansible.builtin.stat:
+        path: "{{"
+        cmd: drush_source_install_path }}/composer.json
       register: drush_composer
 
     - name: ensure Drush can be installed on Debian Wheezy.
@@ -113,25 +120,24 @@
         - drush_clone.changed and ansible_distribution == "Debian"
         - ansible_distribution_release == "wheezy"
         - drush_composer.stat.exists
-      tags: ['skip_ansible_lint']
+      tags: ["skip_ansible_lint"]
 
     - name: install Drush dependencies with Composer.
       ansible.builtin.command: >
         {{ composer_path }} install {{ drush_composer_cli_options }}
         chdir={{ drush_source_install_path }}
       when: (drush_clone.changed and drush_composer.stat.exists) or drush_force_composer_install
-      tags: ['skip_ansible_lint']
+      tags: ["skip_ansible_lint"]
 
-    - name: create drush symlink.
-      ansible.builtin.file:  # noqa 208
+    - name: Create drush symlink.
+      ansible.builtin.file: # noqa 208
         src: "{{ drush_source_install_path }}/drush"
         dest: "{{ drush_source_install_bin_path }}"
         state: link
         force: true
 
-    - name: run drush to finish setting it up.
+    - name: Run drush to finish setting it up.
       ansible.builtin.command: "{{ drush_source_install_bin_path }}"
       register: drush_result
       changed_when: "'Execute a drush command' not in drush_result.stdout"
       become: false
-  when: drush_install_from_source
