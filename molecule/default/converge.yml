@@ -1,7 +1,7 @@
 ---
-- hosts: all
-  name: Converge
-  tasks:
-    - ansible.builtin.include_role:
-        name: buluma.drush
-      name: Include buluma.drush
+  - hosts: all
+    name: Converge
+    tasks:
+      - ansible.builtin.include_role:
+          name: buluma.drush
+        name: Include buluma.drush
