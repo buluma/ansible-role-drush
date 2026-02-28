@@ -53,8 +53,8 @@ drush_install_from_source: false
 drush_keep_updated: false
 drush_launcher_install: true
 drush_launcher_path: /usr/local/bin/drush
-drush_launcher_phar_url: 
-  https://github.com/drush-ops/drush-launcher/releases/download/{{ 
+drush_launcher_phar_url:
+  https://github.com/drush-ops/drush-launcher/releases/download/{{
   drush_launcher_version }}/drush.phar
 drush_launcher_version: 0.6.0
 drush_source_install_bin_path: /usr/local/bin/drush
