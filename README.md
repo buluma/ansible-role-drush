@@ -11,26 +11,23 @@ Install Drupal shell.
 This example is taken from [`molecule/default/converge.yml`](https://github.com/buluma/ansible-role-drush/blob/master/molecule/default/converge.yml) and is tested on each push, pull request and release.
 
 ```yaml
----
-- name: Converge
-  hosts: all
+- hosts: all
+  name: Converge
   tasks:
-    - name: "Include buluma.drush"
-      ansible.builtin.include_role:
-        name: "buluma.drush"
+  - ansible.builtin.include_role:
+      name: buluma.drush
+    name: Include buluma.drush
 ```
 
 The machine needs to be prepared. In CI this is done using [`molecule/default/prepare.yml`](https://github.com/buluma/ansible-role-drush/blob/master/molecule/default/prepare.yml):
 
 ```yaml
----
-- name: prepare
+- become: true
+  gather_facts: false
   hosts: all
-  become: yes
-  gather_facts: no
-
+  name: prepare
   roles:
-    - role: buluma.bootstrap
+  - role: buluma.bootstrap
 ```
 
 Also see a [full explanation and example](https://buluma.github.io/how-to-use-these-roles.html) on how to use these roles.
@@ -40,32 +37,25 @@ Also see a [full explanation and example](https://buluma.github.io/how-to-use-th
 The default values for the variables are set in [`defaults/main.yml`](https://github.com/buluma/ansible-role-drush/blob/master/defaults/main.yml):
 
 ```yaml
----
-# defaults file for drush
-# Install Drush Launcher.
-drush_launcher_install: true
-drush_launcher_version: "0.6.0"
-drush_launcher_phar_url: >-
-  https://github.com/drush-ops/drush-launcher/releases/download/{{ drush_launcher_version }}/drush.phar
-drush_launcher_path: /usr/local/bin/drush
-
-# Install Drush via Composer globally.
-drush_composer_global_install: false
-drush_composer_version: "~9.0"
-drush_composer_update: false
+drush_clone_depth: 1
+drush_composer_cli_options: --prefer-dist --no-interaction
 drush_composer_global_bin_path: ~/.config/composer/vendor/bin
+drush_composer_global_install: false
 drush_composer_path: /usr/local/bin/drush
-
-# Install from source (git clone + composer-based install).
+drush_composer_update: false
+drush_composer_version: ~9.0
+drush_force_composer_install: false
+drush_force_update: false
 drush_install_from_source: false
+drush_keep_updated: false
+drush_launcher_install: true
+drush_launcher_path: /usr/local/bin/drush
+drush_launcher_phar_url: https://github.com/drush-ops/drush-launcher/releases/download/{{
+  drush_launcher_version }}/drush.phar
+drush_launcher_version: 0.6.0
 drush_source_install_bin_path: /usr/local/bin/drush
 drush_source_install_path: /usr/local/share/drush
-drush_source_install_version: "8.x"
-drush_keep_updated: false
-drush_force_update: false
-drush_force_composer_install: false
-drush_composer_cli_options: "--prefer-dist --no-interaction"
-drush_clone_depth: 1
+drush_source_install_version: 8.x
 ```
 
 ## [Requirements](#requirements)
