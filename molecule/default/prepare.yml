@@ -4,4 +4,4 @@
   hosts: all
   name: prepare
   roles:
-  - role: buluma.bootstrap
+    - role: buluma.bootstrap
