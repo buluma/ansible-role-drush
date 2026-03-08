@@ -53,11 +53,11 @@ drush_install_from_source: false
 drush_keep_updated: false
 drush_launcher_install: true
 drush_launcher_path: /usr/local/bin/drush
-drush_launcher_phar_url: https://github.com/drush-ops/drush-launcher/releases/download/{{ drush_launcher_version }}/drush.phar
-drush_launcher_version: 0.6.0
+drush_launcher_phar_url: "https://github.com/drush-ops/drush-launcher/releases/download/{{ drush_launcher_version }}/drush.phar"
+drush_launcher_version: "0.6.0"
 drush_source_install_bin_path: /usr/local/bin/drush
 drush_source_install_path: /usr/local/share/drush
-drush_source_install_version: 8.x
+drush_source_install_version: "8.x"
 ```
 
 ## [Requirements](#requirements)
@@ -104,3 +104,4 @@ If you find issues, please register them on [GitHub](https://github.com/buluma/a
 ## [Author Information](#author-information)
 
 [Michael Buluma](https://buluma.github.io/)
+
