@@ -47,13 +47,11 @@
         command: require
         global_command: true
       register: drush_composer_require
-    - composer:
+    - name: Update global Drush install if configured.
+      community.general.composer:
         arguments: drush/drush --with-dependencies
         command: update
         global_command: true
-      name: update global Drush install if configured.
-      tags:
-        - skip_ansible_lint
       when:
         - drush_composer_update
         - not drush_composer_require.changed
@@ -78,18 +76,20 @@
       ansible.builtin.stat:
         path: "{{ drush_source_install_path }}/composer.json"
       register: drush_composer
-    - ansible.builtin.command: "{{ composer_path }} update {{ drush_composer_cli_options }} chdir={{ drush_source_install_path }}\n"
-      name: ensure Drush can be installed on Debian Wheezy.
-      tags:
-        - skip_ansible_lint
+    - name: Ensure Drush can be installed on Debian Wheezy.
+      ansible.builtin.command:
+        cmd: "{{ composer_path }} update {{ drush_composer_cli_options }}"
+        chdir: "{{ drush_source_install_path }}"
+      changed_when: true
       when:
         - drush_clone.changed and ansible_facts['distribution'] == "Debian"
         - ansible_facts['distribution_release'] == "wheezy"
         - drush_composer.stat.exists
-    - ansible.builtin.command: "{{ composer_path }} install {{ drush_composer_cli_options }} chdir={{ drush_source_install_path }}\n"
-      name: install Drush dependencies with Composer.
-      tags:
-        - skip_ansible_lint
+    - name: Install Drush dependencies with Composer.
+      ansible.builtin.command:
+        cmd: "{{ composer_path }} install {{ drush_composer_cli_options }}"
+        chdir: "{{ drush_source_install_path }}"
+      changed_when: true
       when: (drush_clone.changed and drush_composer.stat.exists) or drush_force_composer_install
     - name: Create drush symlink.
       ansible.builtin.file:
