@@ -3,5 +3,7 @@
   hosts: all
   become: true
   gather_facts: false
+
   roles:
     - role: buluma.bootstrap
+    - role: buluma.ca_certificates

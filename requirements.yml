@@ -2,3 +2,4 @@
 collections: []
 roles:
   - name: buluma.bootstrap
+  - name: buluma.ca_certificates
