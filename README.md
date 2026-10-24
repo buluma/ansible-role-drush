@@ -77,7 +77,7 @@ drush_composer_global_bin_path: ~/.config/composer/vendor/bin
 drush_composer_global_install: false
 drush_composer_path: /usr/local/bin/drush
 drush_composer_update: false
-drush_composer_version: ~9.0
+drush_composer_version: "13.8.0"
 drush_force_composer_install: false
 drush_force_update: false
 drush_install_from_source: false
@@ -88,7 +88,7 @@ drush_launcher_phar_url: "https://github.com/drush-ops/drush-launcher/releases/d
 drush_launcher_version: "0.6.0"
 drush_source_install_bin_path: /usr/local/bin/drush
 drush_source_install_path: /usr/local/share/drush
-drush_source_install_version: "8.x"
+drush_source_install_version: "13.8.0"
 ```
 
 ## [Requirements](#requirements)
@@ -138,3 +138,5 @@ If you find issues, please register them on [GitHub](https://github.com/buluma/a
 ## [Author Information](#author-information)
 
 [buluma](https://buluma.github.io/)
+
+Drush 13 requires PHP 8.3 or later and a compatible Drupal 10/11 site. Upstream recommends installing Drush as a Composer dependency of the Drupal project and invoking `vendor/bin/drush`. The optional global and source installation modes are retained for existing callers; upgrading the default does not upgrade Drupal or PHP.
