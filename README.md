@@ -138,5 +138,3 @@ If you find issues, please register them on [GitHub](https://github.com/buluma/a
 ## [Author Information](#author-information)
 
 [buluma](https://buluma.github.io/)
-
-Drush 13 requires PHP 8.3 or later and a compatible Drupal 10/11 site. Upstream recommends installing Drush as a Composer dependency of the Drupal project and invoking `vendor/bin/drush`. The optional global and source installation modes are retained for existing callers; upgrading the default does not upgrade Drupal or PHP.
